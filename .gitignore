@@ -1,0 +1,3 @@
+# builds are stored in zip files via "zip -r cling-{version}.zip ext/" from the root directory.
+*.zip
+.DS_Store

@@ -1,0 +1,32 @@
+{
+  "name": "Cling for Youtube",
+  "version": "0.1.3",
+  "manifest_version": 2,
+  "description": "Make youtube videos cling to the top of the window while you browse the comments.",
+  "homepage_url": "http://extensionizr.com",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "permissions": [
+    "https://youtube.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "src/inject/inject.js"
+      ],
+      "css": [
+        "src/inject/inject.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "icons/arrow31.svg"
+  ]
+}

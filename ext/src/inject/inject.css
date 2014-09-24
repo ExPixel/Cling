@@ -1,0 +1,33 @@
+.cling-container {
+	position: fixed;
+	background-color: rgb(27, 27, 27);
+	top: 24px;
+	left: -336px;
+	width: 320px;
+	height: 180px;
+	max-width: 320px;
+	max-height: 180px;
+	box-shadow: 0 0 8px 4px rgb(27, 27, 27);
+	visibility: visible;
+	transition: left 0.1s ease-out 0.1s;
+	z-index: 998;
+}
+
+.cling-play-layer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+}
+
+.cling-play-image {
+	position: absolute;
+	width: 32px;
+	height: 32px;
+	fill: #ffffff;
+	stroke: #ffffffff;
+	bottom: 8px;
+	right: 8px;
+}
