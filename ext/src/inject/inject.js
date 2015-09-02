@@ -45,6 +45,7 @@ var __Cling__ = (function() {
 		this.scrollChangeInterval = null;
 		this.lastScrollPosition = -1;
 		this.clinging = false;
+		this.allowCling = false;
 		this.videoState = {
 			"paused": false
 		};
@@ -79,14 +80,29 @@ var __Cling__ = (function() {
 	 */
 	Cling.prototype.onURLChange = function() {
 		log("URL changed: %s", this.currentURL);
+		this.allowCling = this.isVideoPage();
 		this.uncling();
 		// this.takeVideo();
+	}
+
+	/**
+	 * returns true if this is probably a video page.
+	 */
+	Cling.prototype.isVideoPage = function() {
+		var url = document.createElement("a");
+		url.href = window.location.href.toLowerCase();
+		if(url.pathname.startsWith("/watch") && url.search.indexOf("v=")  > -1) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	Cling.prototype.cling = function() {
 		if(this.clinging) {
 			return;
 		}
+		if(!this.allowCling) { return; }
 		this.clinging = true;
 		this.ensureClingWindow();
 		this.clingWindow.classList.remove("ext-cling-window-hidden");
@@ -285,6 +301,7 @@ var __Cling__ = (function() {
 	}
 
 	Cling.prototype.onScroll = function() {
+		if(!this.allowCling) {return;} // speed dat scroll up.
 		var video = this.findVideoElement();
 		var bottom = video.offsetHeight + video.offsetTop;
 		if(window.scrollY > bottom) {
