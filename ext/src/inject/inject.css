@@ -10,7 +10,7 @@
 	border: 1px solid #F44336;
 	box-shadow: 0px 0px 16px #222;
 
-	z-index: 1999999998; /* One less the the youtube App Bar */
+	z-index: 1999999998;
 }
 
 .ext-cling-window-hidden {
@@ -18,7 +18,40 @@
 }
 
 .ext-cling-window > video.video-stream.html5-main-video {
+	position: absolute;
+	left: 0;
+	top: 0;
 	width: 100% !important;
 	height: 100% !important;
+	z-index: 1 !important;
 }
 
+.ext-cling-toggle-state-control {
+	left: 168px;
+	top: 84px;
+	width: 64px;
+	height: 64px;
+	border-radius: 24px;
+	background-size: contain;
+	opacity: 0.7;
+}
+
+.ext-cling-toggle-state-control:hover {
+	opacity: 1.0;
+}
+
+.ext-cling-control {
+	position: absolute;
+	z-index: 2;
+}
+
+.ext-cling-control:hover {
+}
+
+.ext-cling-window:hover .ext-cling-control {
+	display: block;
+}
+
+.ext-cling-window .ext-cling-control {
+	display: none;
+}

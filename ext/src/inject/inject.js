@@ -4,6 +4,18 @@ var __Cling__ = (function() {
 	var ANIMATE_IN = "flipInX";
 	var ANIMATE_OUT = "flipOutX";
 
+	/**
+	 * Not curl as in client side URL transfers
+	 * but curl as in chrome url.
+	 */
+	function curl(resource) {
+		return chrome.extension.getURL(resource);
+	}
+
+	var PAUSE_ICON = "url('" + curl("icons/pause_48px.png") + "')";
+	var PLAY_ICON = "url('" + curl("icons/play_48px.png") + "')";
+
+
 	function log() {
 		if(__DEBUG_MODE__ && arguments.length > 0) {
 			var data = ["%c[CLING] " + arguments[0], "background: #073642; color: #b58900; padding: 4px;"];
@@ -21,6 +33,12 @@ var __Cling__ = (function() {
 		this.urlChangeInterval = null;
 		this.currentURL = null;
 		this.clingWindow = null;
+		this.clingWindowControls = {
+			"toggleState": null,
+			"clear": function() {
+				this.toggleState = null;
+			}
+		};
 		this.isFlashVideo = false;
 		this.oldVideoParent = null;
 		this.videoElement = null;
@@ -96,6 +114,7 @@ var __Cling__ = (function() {
 			if(this.clingWindow.parentElement) {
 				this.clingWindow.parentElement.removeChild(this.clingWindow);
 				this.clingWindow = null;
+				this.clingWindowControls.clear();
 			}
 		}
 	}
@@ -130,7 +149,6 @@ var __Cling__ = (function() {
 	// #todo create HTML5 and flash version?
 	Cling.prototype.restoreVideoState = function() {
 		if(this.videoElement) {
-			debugger;
 			if(this.videoState.paused) {
 				this.videoElement.pause();
 			} else {
@@ -173,12 +191,50 @@ var __Cling__ = (function() {
 		this.clingWindow.classList.add("ext-cling-window-hidden");
 		document.body.appendChild(this.clingWindow);
 
+		var clingWindowToggleState = document.createElement("div");
+		clingWindowToggleState.classList.add("ext-cling-control");
+		clingWindowToggleState.classList.add("ext-cling-toggle-state-control");
+		clingWindowToggleState.style.backgroundImage = PAUSE_ICON;
+		this.clingWindow.appendChild(clingWindowToggleState);
+
+		var _self = this;
+		this.clingWindowControls.toggleState = clingWindowToggleState;
+		this.clingWindowControls.toggleState.addEventListener("click", function() {
+			_self.onToggleVideoState();
+		});
+
 		var ytHeader = document.getElementById("yt-masthead-container");
 		if(ytHeader) {
 			this.clingWindow.style.marginTop = ytHeader.offsetHeight + "px";
 		}
 
 		log("Created cling window.");
+	}
+
+	Cling.prototype.onToggleVideoState = function() {
+		if(this.videoElement) {
+			if(this.videoElement.paused) {
+				this.videoElement.play();
+			} else {
+				this.videoElement.pause();
+			}
+		}
+		this.doControls();
+		log("Toggled Video State.");
+	}
+
+	Cling.prototype.doControls = function() {
+		if(this.clingWindowControls) {
+			if(this.clingWindowControls.toggleState) {
+				if(this.videoElement) {
+					if(this.videoElement.paused) {
+						this.clingWindowControls.toggleState.style.backgroundImage = PLAY_ICON;
+					} else {
+						this.clingWindowControls.toggleState.style.backgroundImage = PAUSE_ICON;
+					}
+				}
+			}
+		}
 	}
 
 	/**
