@@ -90,10 +90,21 @@ var __Cling__ = (function() {
 		this.clinging = true;
 		this.ensureClingWindow();
 		this.clingWindow.classList.remove("ext-cling-window-hidden");
-		this.clingWindow.classList.add("animated");
-		this.clingWindow.classList.remove(ANIMATE_OUT);
-		this.clingWindow.classList.add(ANIMATE_IN);
-		this.takeVideo();
+		var clinged = this.takeVideo(true);
+		if(clinged) {
+			this.clingWindow.classList.add("animated");
+			this.clingWindow.classList.remove(ANIMATE_OUT);
+			this.clingWindow.classList.add(ANIMATE_IN);
+		} else {
+			this.clinging = false;
+		}
+
+		if(this.videoElement) {
+			var _self = this;
+			this.videoElement.addEventListener("ended", function() {
+				_self.uncling();
+			});
+		}
 	}
 
 	Cling.prototype.uncling = function() {
@@ -119,11 +130,12 @@ var __Cling__ = (function() {
 		}
 	}
 
-	Cling.prototype.takeVideo = function() {
+	Cling.prototype.takeVideo = function(assertVideoNotEnded) {
 		if(this.isFlashVideo) {
 			log("(take) Oh no! It's the Flash!");
+			return false;
 		} else {
-			this.takeHtml5Video();
+			return this.takeHtml5Video(assertVideoNotEnded);
 		}
 	}
 
@@ -157,15 +169,20 @@ var __Cling__ = (function() {
 		}
 	}
 
-	Cling.prototype.takeHtml5Video = function() {
+	Cling.prototype.takeHtml5Video = function(assertVideoNotEnded) {
 		log("Attempting to take video...");
 		this.ensureClingWindow();
 		this.videoElement = this.findVideoElement();
+		if(this.videoElement == null || this.videoElement.ended) {
+			this.videoElement = null;
+			return false;
+		}
 		this.oldVideoParent = this.videoElement.parentElement;
 		this.commitVideoState();
 		this.clingWindow.appendChild(this.videoElement);
 		var _self = this;
 		_self.restoreVideoState();
+		return true;
 	}
 
 	Cling.prototype.releaseHtml5Video = function() {
@@ -271,11 +288,9 @@ var __Cling__ = (function() {
 		var video = this.findVideoElement();
 		var bottom = video.offsetHeight + video.offsetTop;
 		if(window.scrollY > bottom) {
-			log("CLING");
-			this.cling();
+			if(!this.clinging) {this.cling();}
 		} else {
-			log("UNCLING");
-			this.uncling();
+			if(this.clinging) {this.uncling();}
 		}
 	}
 
