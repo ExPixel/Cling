@@ -1,5 +1,5 @@
 var __Cling__ = (function() {
-	var __DEBUG_MODE__ = true;
+	var __DEBUG_MODE__ = false;
 	var SCROLL_INTERVAL_MS = 60;
 	var ANIMATE_IN = "flipInX";
 	var ANIMATE_OUT = "flipOutX";
@@ -121,6 +121,8 @@ var __Cling__ = (function() {
 				_self.uncling();
 			});
 		}
+
+		this.doControls();
 	}
 
 	Cling.prototype.uncling = function() {
