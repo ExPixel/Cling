@@ -19,6 +19,7 @@
         "https://www.youtube.com/*"
       ],
       "css": [
+        "src/inject/animate.min.css",
         "src/inject/inject.css"
       ]
     },

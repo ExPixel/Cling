@@ -7,12 +7,18 @@
 	height: 216px;
 	background: black;
 
+	border: 1px solid #F44336;
 	box-shadow: 0px 0px 16px #222;
 
 	z-index: 1999999998; /* One less the the youtube App Bar */
+}
+
+.ext-cling-window-hidden {
+	display: none;
 }
 
 .ext-cling-window > video.video-stream.html5-main-video {
 	width: 100% !important;
 	height: 100% !important;
 }
+
