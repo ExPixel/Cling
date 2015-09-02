@@ -130,6 +130,7 @@ var __Cling__ = (function() {
 	// #todo create HTML5 and flash version?
 	Cling.prototype.restoreVideoState = function() {
 		if(this.videoElement) {
+			debugger;
 			if(this.videoState.paused) {
 				this.videoElement.pause();
 			} else {
@@ -140,10 +141,10 @@ var __Cling__ = (function() {
 
 	Cling.prototype.takeHtml5Video = function() {
 		log("Attempting to take video...");
-		this.commitVideoState();
 		this.ensureClingWindow();
 		this.videoElement = this.findVideoElement();
 		this.oldVideoParent = this.videoElement.parentElement;
+		this.commitVideoState();
 		this.clingWindow.appendChild(this.videoElement);
 		var _self = this;
 		_self.restoreVideoState();
