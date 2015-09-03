@@ -126,10 +126,12 @@ var __Cling__ = (function() {
 	}
 
 	Cling.prototype.uncling = function() {
-		if(this.clinging && this.clingWindow) {
+		if(this.clingWindow) {
 			this.clingWindow.classList.add("animated");
-			this.clingWindow.classList.remove(ANIMATE_IN);
-			this.clingWindow.classList.add(ANIMATE_OUT);
+			if(this.clingWindow.classList.contains(ANIMATE_IN))
+				this.clingWindow.classList.remove(ANIMATE_IN);
+			if(!this.clingWindow.classList.contains(ANIMATE_OUT))
+				this.clingWindow.classList.add(ANIMATE_OUT);
 			this.releaseVideo();
 		}
 		this.clinging = false;
