@@ -1,6 +1,6 @@
 {
   "name": "Cling",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "manifest_version": 2,
   "description": "Make youtube videos cling to the top of the window while you browse Youtube comments.",
   "homepage_url": "http://github.com/expixel",
