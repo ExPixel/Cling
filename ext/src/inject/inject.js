@@ -113,6 +113,7 @@ var __Cling__ = (function() {
 			this.clingWindow.classList.add(ANIMATE_IN);
 		} else {
 			this.clinging = false;
+			this.destroyWindow(); // For good measure.
 		}
 
 		if(this.videoElement) {
